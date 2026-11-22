@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'"
+    />
+    <title>¿Quieres ser mi novia?</title>
+    <link rel="stylesheet" href="estilos.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23e23b55' d='M16 27s-9-5.6-9-12a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6.4-9 12-9 12z'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body data-estado="ask">
+    <main class="escena">
+      <section class="tarjeta panel-ask" aria-labelledby="pregunta">
+        <p class="kicker">Pregunta</p>
+        <h1 id="pregunta">¿Quieres ser mi novia?</h1>
+        <p class="instruccion" id="instruccion">
+          El sí se escapa. Solo el no completa la misión.
+        </p>
+        <p class="aviso" id="aviso" role="status"></p>
+        <form class="arena" id="arena" method="get" action="">
+          <button
+            class="btn btn-si"
+            id="si"
+            type="submit"
+            name="respuesta"
+            value="si"
+            data-spot=""
+            aria-describedby="instruccion"
+          >
+            Sí
+          </button>
+          <button
+            class="btn btn-no"
+            id="no"
+            type="submit"
+            name="respuesta"
+            value="no"
+          >
+            No
+          </button>
+        </form>
+      </section>
+
+      <section class="tarjeta panel-complete" aria-labelledby="mision">
+        <div class="sello" aria-hidden="true"><span>✓</span></div>
+        <p class="kicker">Resultado</p>
+        <h1 id="mision" tabindex="-1">Misión completada</h1>
+        <p class="cierre">Elegiste no. Era la única opción que funcionaba.</p>
+        <a class="otra" href="?">Volver a preguntar</a>
+      </section>
+    </main>
+    <script src="juego.js"></script>
+  </body>
+</html>

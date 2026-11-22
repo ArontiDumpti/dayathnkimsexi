@@ -1,0 +1,239 @@
+:root {
+  color-scheme: light;
+  --tinta: #3a1822;
+  --rosa: #e23b55;
+  --rosa-oscuro: #9d1832;
+  --noche: #241c1f;
+  --papel: #fffaf7;
+  --blush: #f6ebe6;
+  --aviso: #8d3144;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(28px, env(safe-area-inset-top))
+    16px
+    max(28px, env(safe-area-inset-bottom));
+  background:
+    radial-gradient(ellipse 70% 45% at 12% -10%, #ffd4dc 0%, transparent 60%),
+    radial-gradient(ellipse 55% 40% at 110% 110%, #f3c1cb 0%, transparent 55%),
+    var(--blush);
+  color: var(--tinta);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.escena {
+  width: min(30rem, 100%);
+}
+
+.tarjeta {
+  background: var(--papel);
+  border-radius: 28px;
+  padding: 2.1rem 1.5rem 1.6rem;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 80%) inset,
+    0 22px 50px rgb(90 30 46 / 12%);
+}
+
+.kicker {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aviso);
+}
+
+h1 {
+  margin: 0;
+  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  font-size: clamp(2.1rem, 7vw, 3.15rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.instruccion {
+  margin: 0.9rem 0 0;
+  max-width: 28ch;
+  color: #6d4b55;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.aviso {
+  min-height: 1.4rem;
+  margin: 0.7rem 0 0;
+  color: var(--aviso);
+  font-weight: 700;
+}
+
+.aviso:empty {
+  margin-top: 0.35rem;
+}
+
+.arena {
+  position: relative;
+  height: 16.5rem;
+  margin: 0.4rem 0 0;
+}
+
+.btn {
+  position: absolute;
+  min-width: 8.25rem;
+  min-height: 3.25rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-si {
+  left: 50%;
+  top: 28%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--rosa-oscuro);
+  background: var(--rosa);
+  color: #fff;
+  box-shadow: 0 12px 22px rgb(226 59 85 / 28%);
+  transition:
+    left 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-no {
+  left: 50%;
+  top: 72%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--noche);
+  background: var(--noche);
+  color: #fff8f4;
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn:active {
+  filter: brightness(0.96);
+}
+
+.btn:focus-visible,
+.otra:focus-visible {
+  outline: 3px solid var(--noche);
+  outline-offset: 3px;
+}
+
+#mision:focus {
+  outline: none;
+}
+
+.panel-complete {
+  display: none;
+  text-align: center;
+}
+
+body[data-estado="complete"] .panel-ask {
+  display: none;
+}
+
+body[data-estado="complete"] .panel-complete {
+  display: block;
+  animation: aparecer 0.35s ease;
+}
+
+.sello {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: #e7f6ec;
+  color: #1d7a45;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.cierre {
+  margin: 0.85rem auto 0;
+  max-width: 26ch;
+  color: #6d4b55;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.otra {
+  display: inline-block;
+  margin-top: 1.4rem;
+  color: var(--tinta);
+  font-weight: 700;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 520px) {
+  .tarjeta {
+    padding: 2.4rem 2rem 1.8rem;
+  }
+
+  .arena {
+    height: 16rem;
+  }
+
+  .btn-si {
+    left: 32%;
+    top: 50%;
+  }
+
+  .btn-no {
+    left: 68%;
+    top: 50%;
+  }
+}
+
+@media (max-height: 700px) {
+  body {
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-si,
+  .panel-complete {
+    transition: none;
+    animation: none;
+  }
+}
