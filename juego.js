@@ -2,8 +2,16 @@ const cuerpo = document.body;
 const si = document.querySelector("#si");
 const no = document.querySelector("#no");
 const mision = document.querySelector("#mision");
+const animales = [
+  "🐶", "🐱", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯",
+  "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐤",
+  "🐹", "🐭", "🦄", "🐢", "🦉", "🦋", "🐝", "🐞",
+  "🦆", "🐺", "🦝", "🐿️",
+];
+const limite = 28;
 
 let anclado = false;
+let sueltos = 0;
 
 function mostrarMision() {
   cuerpo.dataset.estado = "complete";
@@ -85,10 +93,28 @@ function estadoInicial() {
   }
 }
 
+function soltarAnimal() {
+  if (sueltos >= limite) {
+    return;
+  }
+  const bicho = document.createElement("span");
+  const cuerpoAnimal = document.createElement("span");
+  const indice = sueltos;
+  sueltos += 1;
+  bicho.className = indice % 2 === 0 ? "animal va-derecha" : "animal va-izquierda";
+  bicho.setAttribute("aria-hidden", "true");
+  cuerpoAnimal.textContent = animales[indice];
+  bicho.append(cuerpoAnimal);
+  bicho.style.top = `${8 + ((indice * 19) % 78)}%`;
+  bicho.style.setProperty("--t", `${5.2 + (indice % 6) * 0.85}s`);
+  document.body.append(bicho);
+}
+
 if (no instanceof HTMLButtonElement) {
   no.addEventListener("click", (evento) => {
     evento.preventDefault();
     moverNo();
+    soltarAnimal();
   });
 }
 

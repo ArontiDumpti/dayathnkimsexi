@@ -2,7 +2,7 @@
 
 ¿Quieres ser mi novia?
 
-**No** solo cambia de lugar cuando le das clic y no confirma nada. **Sí** muestra «Misión completada». El fondo lleva la marca de agua Hunti en letra de grafiti.
+**No** empieza en el centro. Cada clic lo mueve y suelta un animalito que cruza la página, hasta 28. **Sí** muestra «Misión completada». El fondo lleva la marca de agua Hunti en letra de grafiti.
 
 ```bash
 php -S 127.0.0.1:8643 -t .
