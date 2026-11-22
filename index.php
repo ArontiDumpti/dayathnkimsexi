@@ -82,7 +82,7 @@ if ($estilo !== '') {
 if ($estado === 'complete') {
     $html = str_replace(
         '<title>¿Quieres ser mi novia?</title>',
-        '<title>Misión completada</title>',
+        '<title>Tiempo límite para llamarme</title>',
         $html,
         $cambios
     );

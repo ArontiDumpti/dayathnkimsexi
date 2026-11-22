@@ -10,12 +10,79 @@ const animales = [
 ];
 const limite = 28;
 
+const cuenta = document.querySelector("#cuenta");
+const bomba = document.querySelector("#bomba");
+const total = 5 * 60 * 1000;
+
 let anclado = false;
 let sueltos = 0;
+let plazo = 0;
+let reloj = 0;
+
+function textoRestante(ms) {
+  const segundos = Math.max(0, Math.ceil(ms / 1000));
+  const minutos = Math.floor(segundos / 60);
+  const resto = segundos % 60;
+  return `${minutos}:${String(resto).padStart(2, "0")}`;
+}
+
+function crecerBomba(progreso) {
+  if (!(bomba instanceof HTMLElement)) {
+    return;
+  }
+  const lado = Math.min(window.innerWidth, window.innerHeight);
+  const escala = 0.85 + ((lado * 0.92) / 72 - 0.85) * progreso;
+  bomba.style.transform = `scale(${escala})`;
+}
+
+function estallar() {
+  cuerpo.dataset.fin = "1";
+  document.title = "0:00";
+  if (cuenta instanceof HTMLElement) {
+    cuenta.textContent = "0:00";
+  }
+}
+
+function marcarTiempo() {
+  const queda = plazo - Date.now();
+  if (queda <= 0) {
+    estallar();
+    reloj = 0;
+    return;
+  }
+  if (cuenta instanceof HTMLElement) {
+    const texto = textoRestante(queda);
+    if (cuenta.textContent !== texto) {
+      cuenta.textContent = texto;
+    }
+  }
+  crecerBomba(1 - queda / total);
+  reloj = requestAnimationFrame(marcarTiempo);
+}
+
+function detenerCuenta() {
+  if (reloj !== 0) {
+    cancelAnimationFrame(reloj);
+  }
+  reloj = 0;
+  plazo = 0;
+  delete cuerpo.dataset.fin;
+  if (cuenta instanceof HTMLElement) {
+    cuenta.textContent = "5:00";
+  }
+  if (bomba instanceof HTMLElement) {
+    bomba.style.transform = "";
+    bomba.style.fontSize = "";
+  }
+}
 
 function mostrarMision() {
   cuerpo.dataset.estado = "complete";
-  document.title = "Misión completada";
+  document.title = "Tiempo límite para llamarme";
+  if (plazo === 0) {
+    plazo = Date.now() + total;
+    reloj = requestAnimationFrame(marcarTiempo);
+  }
   if (mision instanceof HTMLElement) {
     mision.focus();
   }
@@ -135,6 +202,7 @@ window.addEventListener("popstate", () => {
     mostrarMision();
     return;
   }
+  detenerCuenta();
   cuerpo.dataset.estado = "ask";
   document.title = "¿Quieres ser mi novia?";
 });
