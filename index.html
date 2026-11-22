@@ -15,24 +15,19 @@
     />
   </head>
   <body data-estado="ask">
+    <div class="marca" aria-hidden="true">
+      <span>H</span>
+      <span>u</span>
+      <span>n</span>
+      <span>t</span>
+      <span>i</span>
+    </div>
     <main class="escena">
       <section class="tarjeta panel-ask" aria-labelledby="pregunta">
         <p class="kicker">Pregunta</p>
         <h1 id="pregunta">¿Quieres ser mi novia?</h1>
-        <p class="instruccion" id="instruccion">
-          El sí se escapa. Solo el no completa la misión.
-        </p>
-        <p class="aviso" id="aviso" role="status"></p>
         <form class="arena" id="arena" method="get" action="">
-          <button
-            class="btn btn-si"
-            id="si"
-            type="submit"
-            name="respuesta"
-            value="si"
-            data-spot=""
-            aria-describedby="instruccion"
-          >
+          <button class="btn btn-si" id="si" type="submit" name="respuesta" value="si">
             Sí
           </button>
           <button
@@ -41,6 +36,7 @@
             type="submit"
             name="respuesta"
             value="no"
+            data-spot=""
           >
             No
           </button>
@@ -51,7 +47,6 @@
         <div class="sello" aria-hidden="true"><span>✓</span></div>
         <p class="kicker">Resultado</p>
         <h1 id="mision" tabindex="-1">Misión completada</h1>
-        <p class="cierre">Elegiste no. Era la única opción que funcionaba.</p>
         <a class="otra" href="?">Volver a preguntar</a>
       </section>
     </main>

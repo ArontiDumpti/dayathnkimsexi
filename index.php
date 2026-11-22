@@ -38,15 +38,15 @@ $estilo = '';
 
 if ($respuesta === '') {
     $estado = 'ask';
-} elseif ($respuesta === 'no') {
-    $estado = 'complete';
 } elseif ($respuesta === 'si') {
+    $estado = 'complete';
+} elseif ($respuesta === 'no') {
     $estado = 'dodged';
     $estilo = sprintf(
         'left:%d%%;top:%d%%;transform:translate(0,0) rotate(%ddeg);',
-        random_int(4, 52),
-        random_int(2, 6),
-        random_int(-12, 12)
+        random_int(4, 72),
+        random_int(6, 78),
+        random_int(-10, 10)
     );
 } else {
     rechazar(400, 'Respuesta no válida.');
@@ -67,15 +67,6 @@ if ($estilo !== '') {
     $html = str_replace('data-spot=""', 'style="' . $estilo . '"', $html, $cambios);
     if ($cambios !== 1) {
         rechazar(500, 'No se pudo mover el botón.');
-    }
-    $html = str_replace(
-        '<p class="aviso" id="aviso" role="status"></p>',
-        '<p class="aviso" id="aviso" role="status">Ese sí no cuenta.</p>',
-        $html,
-        $cambios
-    );
-    if ($cambios !== 1) {
-        rechazar(500, 'No se pudo preparar el aviso.');
     }
 }
 

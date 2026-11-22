@@ -1,20 +1,12 @@
-const frases = [
-  "Ese sí no cuenta.",
-  "Sigue sin contar.",
-  "El sí solo sabe correr.",
-];
-
 const cuerpo = document.body;
-const arena = document.querySelector("#arena");
 const si = document.querySelector("#si");
 const no = document.querySelector("#no");
-const aviso = document.querySelector("#aviso");
 const mision = document.querySelector("#mision");
 
-let intentos = 0;
-let colocado = false;
+let reloj = 0;
 
 function mostrarMision() {
+  parar();
   cuerpo.dataset.estado = "complete";
   document.title = "Misión completada";
   if (mision instanceof HTMLElement) {
@@ -22,143 +14,128 @@ function mostrarMision() {
   }
 }
 
-function decir(texto) {
-  if (aviso) {
-    aviso.textContent = texto;
-  }
+function parar() {
+  window.clearInterval(reloj);
+  reloj = 0;
 }
 
-function fijarDondeEsta() {
-  if (!(si instanceof HTMLElement) || !(arena instanceof HTMLElement)) {
+function anclar() {
+  if (!(no instanceof HTMLElement)) {
     return;
   }
-  const marco = arena.getBoundingClientRect();
-  const caja = si.getBoundingClientRect();
-  si.style.transition = "none";
-  si.style.left = `${caja.left - marco.left}px`;
-  si.style.top = `${caja.top - marco.top}px`;
-  si.style.transform = "rotate(0deg)";
-  void si.offsetWidth;
-  si.style.transition = "";
-  colocado = true;
+  const caja = no.getBoundingClientRect();
+  no.style.transition = "none";
+  no.style.left = `${caja.left}px`;
+  no.style.top = `${caja.top}px`;
+  no.style.right = "auto";
+  no.style.bottom = "auto";
+  no.style.transform = "rotate(0deg)";
+  void no.offsetWidth;
+  no.style.transition = "";
 }
 
-function lugarLibre() {
-  if (!(si instanceof HTMLElement) || !(arena instanceof HTMLElement) || !(no instanceof HTMLElement)) {
-    return { x: 12, y: 12, giro: 0 };
+function moverNo() {
+  if (!(no instanceof HTMLElement) || cuerpo.dataset.estado === "complete") {
+    return;
   }
-  const margen = 10;
-  const ancho = si.offsetWidth;
-  const alto = si.offsetHeight;
-  const maxX = Math.max(margen, arena.clientWidth - ancho - margen);
-  const maxY = Math.max(margen, arena.clientHeight - alto - margen);
-  const marco = arena.getBoundingClientRect();
-  const prohibido = no.getBoundingClientRect();
-  const actual = si.getBoundingClientRect();
-  const origenX = actual.left + actual.width / 2;
-  const origenY = actual.top + actual.height / 2;
-  const lejos = [];
-  let reserva = null;
+  const margen = 20;
+  const ancho = no.offsetWidth || 132;
+  const alto = no.offsetHeight || 52;
+  const maxX = Math.max(margen, window.innerWidth - ancho - margen);
+  const maxY = Math.max(margen, window.innerHeight - alto - margen);
+  const protegido = si instanceof HTMLElement ? si.getBoundingClientRect() : null;
+  const actual = no.getBoundingClientRect();
+  let elegido = null;
 
-  for (let i = 0; i < 40; i += 1) {
+  for (let i = 0; i < 36; i += 1) {
     const x = margen + Math.random() * (maxX - margen);
     const y = margen + Math.random() * (maxY - margen);
-    const izquierda = marco.left + x;
-    const arriba = marco.top + y;
-    const derecha = izquierda + ancho;
-    const abajo = arriba + alto;
-    const holgura = 16;
-    const choca = !(
-      derecha < prohibido.left - holgura ||
-      izquierda > prohibido.right + holgura ||
-      abajo < prohibido.top - holgura ||
-      arriba > prohibido.bottom + holgura
-    );
+    const derecha = x + ancho;
+    const abajo = y + alto;
+    const choca =
+      protegido !== null &&
+      !(
+        derecha < protegido.left - 18 ||
+        x > protegido.right + 18 ||
+        abajo < protegido.top - 18 ||
+        y > protegido.bottom + 18
+      );
     if (choca) {
       continue;
     }
-    const centroX = izquierda + ancho / 2;
-    const centroY = arriba + alto / 2;
-    const recorrido = (centroX - origenX) ** 2 + (centroY - origenY) ** 2;
-    const sitio = { x, y, giro: Math.round(Math.random() * 24 - 12), recorrido };
-    if (!reserva || sitio.recorrido > reserva.recorrido) {
-      reserva = sitio;
+    const recorrido = (x - actual.left) ** 2 + (y - actual.top) ** 2;
+    const sitio = { x, y, giro: Math.round(Math.random() * 18 - 9), recorrido };
+    if (!elegido || sitio.recorrido > elegido.recorrido) {
+      elegido = sitio;
     }
-    if (recorrido >= 72 * 72) {
-      lejos.push(sitio);
+    if (recorrido >= 140 * 140) {
+      break;
     }
   }
 
-  const pool = lejos.length > 0 ? lejos : reserva ? [reserva] : [{ x: margen, y: margen, giro: 0 }];
-  return pool[Math.floor(Math.random() * pool.length)];
+  if (!elegido) {
+    elegido = { x: margen, y: margen, giro: 0 };
+  }
+  no.style.left = `${elegido.x}px`;
+  no.style.top = `${elegido.y}px`;
+  no.style.transform = `rotate(${elegido.giro}deg)`;
 }
 
-function escapar() {
-  if (!(si instanceof HTMLElement)) {
+function empezar() {
+  if (!(no instanceof HTMLElement) || cuerpo.dataset.estado === "complete" || reloj) {
     return;
   }
-  const left = si.style.left;
-  if (!colocado || left.includes("%")) {
-    fijarDondeEsta();
-  }
-  const sitio = lugarLibre();
-  si.style.left = `${sitio.x}px`;
-  si.style.top = `${sitio.y}px`;
-  si.style.transform = `rotate(${sitio.giro}deg)`;
-  decir(frases[Math.min(intentos, frases.length - 1)]);
-  intentos += 1;
+  anclar();
+  moverNo();
+  reloj = window.setInterval(moverNo, 1000);
 }
 
 function estadoInicial() {
   const pedido = new URLSearchParams(window.location.search).get("respuesta");
   const servidor = cuerpo.dataset.estado || "ask";
-
-  if (pedido === "no" || servidor === "complete") {
+  if (pedido === "si" || servidor === "complete") {
     mostrarMision();
     return;
   }
+  empezar();
+}
 
-  if (pedido === "si" || servidor === "dodged") {
-    if (si instanceof HTMLElement && si.getAttribute("style")) {
-      colocado = true;
-      if (aviso && aviso.textContent.trim() === "") {
-        decir(frases[0]);
-      }
-      intentos = 1;
-      return;
-    }
-    escapar();
-  }
+if (no instanceof HTMLButtonElement) {
+  const huir = (evento) => {
+    evento.preventDefault();
+    moverNo();
+  };
+  no.addEventListener("pointerenter", huir);
+  no.addEventListener("pointerdown", huir);
+  no.addEventListener("click", huir);
 }
 
 if (si instanceof HTMLButtonElement) {
   si.addEventListener("click", (evento) => {
     evento.preventDefault();
-    escapar();
-    const url = new URL(window.location.href);
-    url.searchParams.set("respuesta", "si");
-    window.history.replaceState(null, "", url);
-  });
-}
-
-if (no instanceof HTMLButtonElement) {
-  no.addEventListener("click", (evento) => {
-    evento.preventDefault();
     mostrarMision();
     const url = new URL(window.location.href);
-    url.searchParams.set("respuesta", "no");
+    url.searchParams.set("respuesta", "si");
     window.history.pushState(null, "", url);
   });
 }
 
 window.addEventListener("popstate", () => {
   const pedido = new URLSearchParams(window.location.search).get("respuesta");
-  if (pedido === "no") {
+  if (pedido === "si") {
     mostrarMision();
     return;
   }
-  cuerpo.dataset.estado = pedido === "si" ? "dodged" : "ask";
+  parar();
+  cuerpo.dataset.estado = "ask";
   document.title = "¿Quieres ser mi novia?";
+  empezar();
+});
+
+window.addEventListener("resize", () => {
+  if (cuerpo.dataset.estado !== "complete") {
+    moverNo();
+  }
 });
 
 estadoInicial();

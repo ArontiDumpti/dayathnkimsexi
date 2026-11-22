@@ -28,6 +28,7 @@ body {
     max(28px, env(safe-area-inset-top))
     16px
     max(28px, env(safe-area-inset-bottom));
+  overflow-x: hidden;
   background:
     radial-gradient(ellipse 70% 45% at 12% -10%, #ffd4dc 0%, transparent 60%),
     radial-gradient(ellipse 55% 40% at 110% 110%, #f3c1cb 0%, transparent 55%),
@@ -36,7 +37,53 @@ body {
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
+.marca {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.marca span {
+  position: absolute;
+  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  font-size: clamp(7.5rem, 26vw, 16rem);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: rgb(90 30 46 / 9%);
+}
+
+.marca span:nth-child(1) {
+  top: -4vh;
+  left: -2vw;
+}
+
+.marca span:nth-child(2) {
+  top: 6vh;
+  right: -1vw;
+}
+
+.marca span:nth-child(3) {
+  top: 38vh;
+  left: 28vw;
+}
+
+.marca span:nth-child(4) {
+  bottom: 4vh;
+  left: 2vw;
+}
+
+.marca span:nth-child(5) {
+  right: 2vw;
+  bottom: -2vh;
+}
+
 .escena {
+  position: relative;
+  z-index: 1;
   width: min(30rem, 100%);
 }
 
@@ -67,33 +114,14 @@ h1 {
   letter-spacing: -0.03em;
 }
 
-.instruccion {
-  margin: 0.9rem 0 0;
-  max-width: 28ch;
-  color: #6d4b55;
-  font-size: 1rem;
-  line-height: 1.45;
-}
-
-.aviso {
-  min-height: 1.4rem;
-  margin: 0.7rem 0 0;
-  color: var(--aviso);
-  font-weight: 700;
-}
-
-.aviso:empty {
-  margin-top: 0.35rem;
-}
-
 .arena {
-  position: relative;
-  height: 16.5rem;
-  margin: 0.4rem 0 0;
+  display: grid;
+  place-items: center;
+  height: 7.5rem;
+  margin: 1.4rem 0 0;
 }
 
 .btn {
-  position: absolute;
   min-width: 8.25rem;
   min-height: 3.25rem;
   padding: 0.75rem 1.4rem;
@@ -108,28 +136,25 @@ h1 {
 }
 
 .btn-si {
-  left: 50%;
-  top: 28%;
   z-index: 2;
-  transform: translate(-50%, -50%);
   border: 2px solid var(--rosa-oscuro);
   background: var(--rosa);
   color: #fff;
   box-shadow: 0 12px 22px rgb(226 59 85 / 28%);
-  transition:
-    left 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
-    top 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .btn-no {
-  left: 50%;
-  top: 72%;
-  z-index: 1;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  z-index: 5;
+  left: 72%;
+  top: 16%;
   border: 2px solid var(--noche);
   background: var(--noche);
   color: #fff8f4;
+  transition:
+    left 0.55s cubic-bezier(0.2, 0.75, 0.2, 1),
+    top 0.55s cubic-bezier(0.2, 0.75, 0.2, 1),
+    transform 0.55s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
 .btn:hover {
@@ -159,6 +184,10 @@ body[data-estado="complete"] .panel-ask {
   display: none;
 }
 
+body[data-estado="complete"] #no {
+  display: none;
+}
+
 body[data-estado="complete"] .panel-complete {
   display: block;
   animation: aparecer 0.35s ease;
@@ -175,14 +204,6 @@ body[data-estado="complete"] .panel-complete {
   color: #1d7a45;
   font-size: 2rem;
   font-weight: 700;
-}
-
-.cierre {
-  margin: 0.85rem auto 0;
-  max-width: 26ch;
-  color: #6d4b55;
-  font-size: 1.05rem;
-  line-height: 1.45;
 }
 
 .otra {
@@ -208,20 +229,6 @@ body[data-estado="complete"] .panel-complete {
   .tarjeta {
     padding: 2.4rem 2rem 1.8rem;
   }
-
-  .arena {
-    height: 16rem;
-  }
-
-  .btn-si {
-    left: 32%;
-    top: 50%;
-  }
-
-  .btn-no {
-    left: 68%;
-    top: 50%;
-  }
 }
 
 @media (max-height: 700px) {
@@ -231,7 +238,7 @@ body[data-estado="complete"] .panel-complete {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn-si,
+  .btn-no,
   .panel-complete {
     transition: none;
     animation: none;

@@ -2,7 +2,7 @@
 
 ¿Quieres ser mi novia?
 
-**Sí** se mueve al hacer clic y no confirma nada. **No** es la única opción que funciona y muestra «Misión completada».
+**No** recorre la pantalla y no confirma nada. **Sí** muestra «Misión completada». El fondo lleva la marca de agua Hunti.
 
 ```bash
 php -S 127.0.0.1:8643 -t .
