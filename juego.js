@@ -3,10 +3,9 @@ const si = document.querySelector("#si");
 const no = document.querySelector("#no");
 const mision = document.querySelector("#mision");
 
-let reloj = 0;
+let anclado = false;
 
 function mostrarMision() {
-  parar();
   cuerpo.dataset.estado = "complete";
   document.title = "Misión completada";
   if (mision instanceof HTMLElement) {
@@ -14,13 +13,8 @@ function mostrarMision() {
   }
 }
 
-function parar() {
-  window.clearInterval(reloj);
-  reloj = 0;
-}
-
 function anclar() {
-  if (!(no instanceof HTMLElement)) {
+  if (!(no instanceof HTMLElement) || anclado) {
     return;
   }
   const caja = no.getBoundingClientRect();
@@ -32,12 +26,14 @@ function anclar() {
   no.style.transform = "rotate(0deg)";
   void no.offsetWidth;
   no.style.transition = "";
+  anclado = true;
 }
 
 function moverNo() {
   if (!(no instanceof HTMLElement) || cuerpo.dataset.estado === "complete") {
     return;
   }
+  anclar();
   const margen = 20;
   const ancho = no.offsetWidth || 132;
   const alto = no.offsetHeight || 52;
@@ -64,11 +60,11 @@ function moverNo() {
       continue;
     }
     const recorrido = (x - actual.left) ** 2 + (y - actual.top) ** 2;
-    const sitio = { x, y, giro: Math.round(Math.random() * 18 - 9), recorrido };
+    const sitio = { x, y, giro: Math.round(Math.random() * 16 - 8), recorrido };
     if (!elegido || sitio.recorrido > elegido.recorrido) {
       elegido = sitio;
     }
-    if (recorrido >= 140 * 140) {
+    if (recorrido >= 120 * 120) {
       break;
     }
   }
@@ -81,33 +77,19 @@ function moverNo() {
   no.style.transform = `rotate(${elegido.giro}deg)`;
 }
 
-function empezar() {
-  if (!(no instanceof HTMLElement) || cuerpo.dataset.estado === "complete" || reloj) {
-    return;
-  }
-  anclar();
-  moverNo();
-  reloj = window.setInterval(moverNo, 1000);
-}
-
 function estadoInicial() {
   const pedido = new URLSearchParams(window.location.search).get("respuesta");
   const servidor = cuerpo.dataset.estado || "ask";
   if (pedido === "si" || servidor === "complete") {
     mostrarMision();
-    return;
   }
-  empezar();
 }
 
 if (no instanceof HTMLButtonElement) {
-  const huir = (evento) => {
+  no.addEventListener("click", (evento) => {
     evento.preventDefault();
     moverNo();
-  };
-  no.addEventListener("pointerenter", huir);
-  no.addEventListener("pointerdown", huir);
-  no.addEventListener("click", huir);
+  });
 }
 
 if (si instanceof HTMLButtonElement) {
@@ -126,16 +108,8 @@ window.addEventListener("popstate", () => {
     mostrarMision();
     return;
   }
-  parar();
   cuerpo.dataset.estado = "ask";
   document.title = "¿Quieres ser mi novia?";
-  empezar();
-});
-
-window.addEventListener("resize", () => {
-  if (cuerpo.dataset.estado !== "complete") {
-    moverNo();
-  }
 });
 
 estadoInicial();

@@ -37,6 +37,12 @@ body {
   font-family: "Avenir Next", "Segoe UI", sans-serif;
 }
 
+@font-face {
+  font-family: "Hunti Grafiti";
+  src: url("fonts/RubikWetPaint-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
 .marca {
   position: fixed;
   inset: 0;
@@ -46,39 +52,23 @@ body {
   user-select: none;
 }
 
-.marca span {
+.marca p {
   position: absolute;
-  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
-  font-size: clamp(7.5rem, 26vw, 16rem);
-  font-weight: 700;
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  color: rgb(90 30 46 / 9%);
-}
-
-.marca span:nth-child(1) {
-  top: -4vh;
-  left: -2vw;
-}
-
-.marca span:nth-child(2) {
-  top: 6vh;
-  right: -1vw;
-}
-
-.marca span:nth-child(3) {
-  top: 38vh;
-  left: 28vw;
-}
-
-.marca span:nth-child(4) {
-  bottom: 4vh;
-  left: 2vw;
-}
-
-.marca span:nth-child(5) {
-  right: 2vw;
-  bottom: -2vh;
+  top: 48%;
+  left: 50%;
+  margin: 0;
+  transform: translate(-50%, -58%) rotate(-12deg);
+  font-family: "Hunti Grafiti", "Arial Black", sans-serif;
+  font-size: clamp(7.4rem, 34vw, 15rem);
+  font-weight: 400;
+  line-height: 0.75;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: rgb(226 59 85 / 30%);
+  -webkit-text-stroke: 0.028em rgb(36 28 31 / 38%);
+  text-shadow:
+    0.045em 0.05em 0 rgb(36 28 31 / 22%),
+    0.09em 0.14em 0 rgb(141 49 68 / 18%);
 }
 
 .escena {
@@ -222,6 +212,14 @@ body[data-estado="complete"] .panel-complete {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (max-width: 519px) {
+  .marca p {
+    top: 7vh;
+    font-size: 5.6rem;
+    transform: translate(-50%, 0) rotate(-8deg);
   }
 }
 

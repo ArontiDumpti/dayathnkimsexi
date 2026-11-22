@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 if (PHP_SAPI === 'cli-server') {
     $ruta = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
-    $estaticos = ['/estilos.css' => true, '/juego.js' => true, '/index.html' => true];
+    $estaticos = [
+        '/estilos.css' => true,
+        '/juego.js' => true,
+        '/index.html' => true,
+        '/fonts/RubikWetPaint-Regular.ttf' => true,
+    ];
     if (is_string($ruta) && isset($estaticos[$ruta])) {
         return false;
     }
