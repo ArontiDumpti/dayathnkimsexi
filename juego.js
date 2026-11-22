@@ -26,6 +26,7 @@ function anclar() {
     return;
   }
   const caja = no.getBoundingClientRect();
+  no.classList.add("suelto");
   no.style.transition = "none";
   no.style.left = `${caja.left}px`;
   no.style.top = `${caja.top}px`;

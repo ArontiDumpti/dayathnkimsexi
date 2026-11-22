@@ -69,6 +69,10 @@ if ($cambios !== 1) {
 }
 
 if ($estilo !== '') {
+    $html = str_replace('class="btn btn-no"', 'class="btn btn-no suelto"', $html, $cambios);
+    if ($cambios !== 1) {
+        rechazar(500, 'No se pudo soltar el botón.');
+    }
     $html = str_replace('data-spot=""', 'style="' . $estilo . '"', $html, $cambios);
     if ($cambios !== 1) {
         rechazar(500, 'No se pudo mover el botón.');

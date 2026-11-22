@@ -22,10 +22,10 @@ body {
 body {
   min-height: 100vh;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding:
-    max(24vh, calc(env(safe-area-inset-top) + 8.5rem))
+    max(28px, env(safe-area-inset-top))
     16px
     max(28px, env(safe-area-inset-bottom));
   overflow-x: hidden;
@@ -109,11 +109,11 @@ h1 {
 }
 
 .arena {
-  display: grid;
-  align-items: end;
-  justify-items: center;
-  height: 8.5rem;
-  margin: 0.6rem 0 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1.6rem 0 0;
 }
 
 .btn {
@@ -139,14 +139,16 @@ h1 {
 }
 
 .btn-no {
-  position: fixed;
-  z-index: 6;
-  left: 50%;
-  top: 50%;
+  position: static;
   border: 2px solid var(--noche);
   background: var(--noche);
   color: #fff8f4;
-  transform: translate(-50%, -50%);
+}
+
+.btn-no.suelto {
+  position: fixed;
+  z-index: 6;
+  margin: 0;
   transition:
     left 0.55s cubic-bezier(0.2, 0.75, 0.2, 1),
     top 0.55s cubic-bezier(0.2, 0.75, 0.2, 1),
@@ -230,11 +232,6 @@ h1 {
   text-align: center;
 }
 
-body[data-estado="complete"] {
-  align-items: center;
-  padding-top: max(28px, env(safe-area-inset-top));
-}
-
 body[data-estado="complete"] .panel-ask {
   display: none;
 }
@@ -281,10 +278,6 @@ body[data-estado="complete"] .panel-complete {
 }
 
 @media (max-width: 519px) {
-  body {
-    padding-top: max(34vh, calc(env(safe-area-inset-top) + 12rem));
-  }
-
   .marca p {
     top: 7vh;
     font-size: 5.6rem;
@@ -300,7 +293,7 @@ body[data-estado="complete"] .panel-complete {
 
 @media (max-height: 700px) {
   body {
-    padding-top: max(18vh, calc(env(safe-area-inset-top) + 6.5rem));
+    align-items: flex-start;
   }
 }
 
